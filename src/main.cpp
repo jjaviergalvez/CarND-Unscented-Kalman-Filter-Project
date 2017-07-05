@@ -141,7 +141,8 @@ int main(int argc, char* argv[]) {
 
   size_t number_of_measurements = measurement_pack_list.size();
 
-  // column names for output file
+  // original column names for output file
+  /*
   out_file_ << "px" << "\t";
   out_file_ << "py" << "\t";
   out_file_ << "v" << "\t";
@@ -154,9 +155,28 @@ int main(int argc, char* argv[]) {
   out_file_ << "vx_true" << "\t";
   out_file_ << "vy_true" << "\t";
   out_file_ << "NIS" << "\n";
+  */
+
+  // MY column names for output file
+  /*
+  out_file_ << "px" << "\t";
+  out_file_ << "py" << "\t";
+  out_file_ << "v" << "\t";
+  out_file_ << "yaw_angle" << "\t";
+  out_file_ << "yaw_rate" << "\t";
+  out_file_ << "px_measured" << "\t";
+  out_file_ << "py_measured" << "\t";
+  out_file_ << "px_true" << "\t";
+  out_file_ << "py_true" << "\t";
+  out_file_ << "v_true" << "\t";
+  out_file_ << "vy_true" << "\t";
+  out_file_ << "NIS_laser" << "\n";
+  out_file_ << "NIS_radar" << "\n";
+  */
 
 
   for (size_t k = 0; k < number_of_measurements; ++k) {
+    
     // Call the UKF-based fusion
     ukf.ProcessMeasurement(measurement_pack_list[k]);
 
@@ -173,7 +193,6 @@ int main(int argc, char* argv[]) {
 
       // p1 - meas
       out_file_ << measurement_pack_list[k].raw_measurements_(0) << "\t";
-
       // p2 - meas
       out_file_ << measurement_pack_list[k].raw_measurements_(1) << "\t";
     } else if (measurement_pack_list[k].sensor_type_ == MeasurementPackage::RADAR) {
@@ -185,16 +204,20 @@ int main(int argc, char* argv[]) {
     }
 
     // output the ground truth packages
-    out_file_ << gt_pack_list[k].gt_values_(0) << "\t";
-    out_file_ << gt_pack_list[k].gt_values_(1) << "\t";
-    out_file_ << gt_pack_list[k].gt_values_(2) << "\t";
-    out_file_ << gt_pack_list[k].gt_values_(3) << "\t";
-
-    // output the NIS values
+    out_file_ << gt_pack_list[k].gt_values_(0) << "\t"; //px
+    out_file_ << gt_pack_list[k].gt_values_(1) << "\t"; //py
+    double vx = gt_pack_list[k].gt_values_(2);
+    double vy = gt_pack_list[k].gt_values_(3);
+    double v = sqrt(vx*vx + vy*vy);
+    out_file_ << v << "\t"; //v
     
+
+    // output the NIS values    
     if (measurement_pack_list[k].sensor_type_ == MeasurementPackage::LASER) {
-      out_file_ << ukf.NIS_laser_ << "\n";
+      out_file_ << ukf.NIS_laser_ << "\t";
+      out_file_ << 0 << "\n";
     } else if (measurement_pack_list[k].sensor_type_ == MeasurementPackage::RADAR) {
+      out_file_ << 0 << "\t";
       out_file_ << ukf.NIS_radar_ << "\n";
     }
 
