@@ -1,4 +1,4 @@
-# Unscented Kalman Filter Project Starter Code
+# Unscented Kalman Filter
 
 Project for the Self-Driving Car Engineer Nanodegree Program
 
