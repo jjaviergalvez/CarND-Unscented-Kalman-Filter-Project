@@ -1,13 +1,35 @@
 # Unscented Kalman Filter Project Starter Code
-Self-Driving Car Engineer Nanodegree Program
+
+Project for the Self-Driving Car Engineer Nanodegree Program
 
 ---
 
+## Overview
+
+In this project, I implemented an unscented Kalman filter using the CTRV (Constant Turn Rate and Velocity Magnitude) motion model. I used the same bicycle simulation data set from the [extended Kalman filter project](https://github.com/jjaviergalvez/CarND-Extended-Kalman-Filter-Project) (EKF). That way I can compare the results with the EKF project.
+
+All Kalman filters have the same three steps:
+
+1. Initialization
+2. Prediction
+3. Update
+
+A standard Kalman filter can only handle linear equations. Both the extended Kalman filter and the unscented Kalman filter allow you to use non-linear equations; the difference between EKF and UKF is how they handle non-linear equations. But the basics are the same: initialize, predict, update.
+
+
+
 ## Dependencies
 
-* cmake >= v3.5
-* make >= v4.1
-* gcc/g++ >= v5.4
+* cmake >= 3.5
+    * All OSes: [click here for installation instructions](https://cmake.org/install/)
+* make >= 4.1
+    * Linux: make is installed by default on most Linux distros
+    * Mac: [install Xcode command line tools to get make](https://developer.apple.com/xcode/features/)
+    * Windows: [Click here for installation instructions](http://gnuwin32.sourceforge.net/packages/make.htm)
+* gcc/g++ >= 5.4
+    * Linux: gcc / g++ is installed by default on most Linux distros
+    * Mac: same deal as make - [install Xcode command line tools](https://developer.apple.com/xcode/features/)
+    * Windows: recommend using [MinGW](http://www.mingw.org/)
 
 ## Basic Build Instructions
 
@@ -18,29 +40,19 @@ Self-Driving Car Engineer Nanodegree Program
    some sample inputs in 'data/'.
     - eg. `./UnscentedKF ../data/sample-laser-radar-measurement-data-1.txt output.txt`
 
-## Editor Settings
+## Files in the src Folder
 
-We've purposefully kept editor configuration files out of this repo in order to
-keep it as simple and environment agnostic as possible. However, we recommend
-using the following settings:
+The files you need to work with are in the src folder of the github repository.
 
-* indent using spaces
-* set tab width to 2 spaces (keeps the matrices in source code aligned)
+* `main.cpp` - reads in data, calls a function to run the Kalman filter, calls a function to calculate RMSE
+* `ukf.cpp` - initializes the filter, calls the predict and update function, defines the predict and update functions
+* `tools.cpp` - function to calculate RMSE
 
-## Code Style
+The only files I modified are `ukf.cpp` and `tools.cpp` where TODOs comments appear.
 
-Please stick to [Google's C++ style guide](https://google.github.io/styleguide/cppguide.html) as much as possible.
+## Data
 
-## Generating Additional Data
+The data file information is provided by the simulator and is the same data files from [EKF](https://github.com/jjaviergalvez/CarND-Extended-Kalman-Filter-Project). Each line in the data file represents either a lidar or radar measurement marked by "L" or "R" on the starting line. The next columns are either the two lidar position measurements (x,y) or the three radar position measurements (rho, phi, rho_dot). Then comes the time stamp and finally the ground truth values for x, y, vx, vy, yaw, yawrate.
 
-This is optional!
+Although the data set contains values for yaw and yawrate ground truth, there is no need to use these values. `main.cpp` does not use these values, and I only calculate RMSE for x, y vx and vy. You can compare your vx and vy RMSE values from the UKF project and the EKF project. For UKF, vx and vy RMSE should be lower than for EKF; this is because we are using a more detailed motion model and UKF is also known for handling non-linear equations better than EKF.
 
-If you'd like to generate your own radar and lidar data, see the
-[utilities repo](https://github.com/udacity/CarND-Mercedes-SF-Utilities) for
-Matlab scripts that can generate additional data.
-
-## Project Instructions and Rubric
-
-This information is only accessible by people who are already enrolled in Term 2
-of CarND. If you are enrolled, see [the project page](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/0949fca6-b379-42af-a919-ee50aa304e6a/lessons/c3eb3583-17b2-4d83-abf7-d852ae1b9fff/concepts/4d0420af-0527-4c9f-a5cd-56ee0fe4f09e)
-for instructions and the project rubric.
